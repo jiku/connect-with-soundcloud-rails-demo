@@ -18,6 +18,19 @@ class SoundcloudController < ApplicationController
         :soundcloud_refresh_token => soundcloud_client.refresh_token,
         :soundcloud_expires_at    => soundcloud_client.expires_at,
       })
+
+      begin
+        followed_id = "..." 
+        follower_id = "..."
+        following_id = "..."
+
+        puts followed = soundcloud_client.get("/users/#{followed_id}") # Works if followed_id is me.id. Otherwise 401 - Unauthorized if exists, 404 - Not Found if not.
+        puts follower = soundcloud_client.get("/users/#{followed_id}/followers/#{follower_id}") # 401 - Unauthorized if exists, 404 - Not Found if not. 
+        puts following = soundcloud_client.get("/me/followings/#{following_id}") # Same as above.
+
+      rescue SoundCloud::ResponseError => e
+        puts e.response
+      end
     end
     render :layout => false
   end
